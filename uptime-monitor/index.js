@@ -10,12 +10,15 @@ const server = http.createServer((req, res) => {
     // Get the path
     const path = parsedUrl.pathname.replace(/^\/|\/+$/g, '')
 
+    // Get the HTTP method
+    const method = req.method.toUpperCase()
+
     // Send the response
     res.writeHead(200, { 'Content-Type': 'text/plain' })
     res.end('Hello, world!\n')
 
     // Log the request path
-    console.log(`Request received on path: ${path}\n`)
+    console.log(`${method} request received on path: ${path}`)
 })
 
 // Start the server, and have it listen on port 3000
