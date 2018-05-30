@@ -11,11 +11,8 @@ const server = http.createServer((req, res) => {
     const path = parsedUrl.pathname.replace(/^\/|\/+$/g, '')
 
     // Get query string as an object
-    const searchParams = parsedUrl.searchParams
     let queryStringObject = {}
-    for (let pair of searchParams.entries()) {
-        queryStringObject[pair[0]] = pair[1]
-    }
+    parsedUrl.searchParams.forEach((key, value) => {queryStringObject[key] = value})
 
     // Get the HTTP method
     const method = req.method.toUpperCase()
