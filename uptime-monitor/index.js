@@ -17,6 +17,9 @@ const server = http.createServer((req, res) => {
     // Get the HTTP method
     const method = req.method.toUpperCase()
 
+    // Get the headers as an object
+    const headers = req.headers
+
     // Send the response
     res.writeHead(200, { 'Content-Type': 'text/plain' })
     res.end('Hello, world!\n')
