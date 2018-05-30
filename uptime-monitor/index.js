@@ -1,5 +1,6 @@
 const http = require('http')
 const { URL } = require('url')
+const { StringDecoder } = require('string_decoder')
 
 // The server should respond to all requests with a string
 const server = http.createServer((req, res) => {
@@ -20,14 +21,26 @@ const server = http.createServer((req, res) => {
     // Get the headers as an object
     const headers = req.headers
 
-    // Send the response
-    res.writeHead(200, { 'Content-Type': 'text/plain' })
-    res.end('Hello, world!\n')
+    // Get the payload, if any
+    const decoder = new StringDecoder('utf-8')
+    let buffer = ''
+    req.on('data', data => { buffer += decoder.write(data) })
+    req.on('end', () => { 
+        buffer += decoder.end()
 
-    // Log the request
-    const hasQuery = Object.keys(queryStringObject).length > 0
-    console.log(`${method} request received on path ${path}${hasQuery ?
-        `, with these query string parameters: ${JSON.stringify(queryStringObject)}` : ''}`)
+        // Send the response
+        res.writeHead(200, { 'Content-Type': 'text/plain' })
+        res.end('Hello, world!\n')
+        
+        // Log the request
+        console.log(`\n${method} request received on path /${path}`)
+        // Log query string parameters, if any
+        const hasQuery = Object.keys(queryStringObject).length > 0
+        hasQuery && console.log(`Query string parameters: ${JSON.stringify(queryStringObject)}`)
+        // Log payload, if any
+        const hasPayload = buffer.length
+        hasPayload && console.log(`Payload:\n${buffer}`)
+    })
 })
 
 // Start the server, and have it listen on port 3000
