@@ -1,0 +1,4 @@
+# HTTPS keys and certificates
+*.pem
+
+**/.data/*
