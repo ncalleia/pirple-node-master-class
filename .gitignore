@@ -1,4 +1,1 @@
-# HTTPS keys and certificates
-*.pem
-
-**/.data/*
+.DS_Store
